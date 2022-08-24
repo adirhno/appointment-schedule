@@ -203,7 +203,7 @@
       var theId;
       $(document).ready(function () {
         $.ajax({
-          url: "http://localhost:3333/groups",
+          url: "https://appointment-schedule.hostman.site/groups",
           success: function (res) {
             let results = JSON.parse(res).groups;
 
@@ -222,7 +222,9 @@
                 $("#table").html("");
 
                 $.ajax({
-                  url: `http://localhost:3333/meetings/?id=` + theId,
+                  url:
+                    `https://appointment-schedule.hostman.site/meetings/?id=` +
+                    theId,
                   success: function (res) {
                     let results = JSON.parse(res).meeting;
 
@@ -277,7 +279,7 @@
         }/${startDate.getDay()}  ${startDate.getHours()}:00`;
 
         $.ajax({
-          url: `http://localhost:3333/check/?id=${theId}&start=${startDte}`,
+          url: `https://appointment-schedule.hostman.site/check/?id=${theId}&start=${startDte}`,
           success: function (res) {
             alert(JSON.stringify(res.err));
           },
@@ -291,7 +293,7 @@
         let room = $("#room").val();
 
         $.ajax({
-          url: `http://localhost:3333/add`,
+          url: `https://appointment-schedule.hostman.site/add`,
           method: "post",
           data: {
             group_id: theId,
