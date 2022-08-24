@@ -13,10 +13,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const conn = mysql.createConnection({
-  host: "localhost",
-  database: "task3",
-  user: "root",
-  pass: "",
+  host: "94.228.113.90",
+  database: "database",
+  user: "hostman",
+  pass: "2e5d1870",
 });
 
 conn.connect();
