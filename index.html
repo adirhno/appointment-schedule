@@ -1,0 +1,312 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>TASK-3</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: rgb(214, 206, 206);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      .btns {
+        background-color: #e7e7e7;
+        color: black;
+
+        border: none;
+        color: black;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
+
+      .form-popup {
+        display: none;
+        position: fixed;
+        height: 98%;
+        bottom: 0;
+        left: 30%;
+
+        border: 3px solid #f1f1f1;
+        z-index: 9;
+      }
+
+      .form-container {
+        max-width: 400px;
+
+        padding: 10px;
+        background-color: white;
+      }
+
+      .form-container input[type="text"],
+      .form-container input[type="text"] {
+        width: 88%;
+
+        padding: 15px;
+        margin: 5px 0 22px 0;
+        border: none;
+        background: #f1f1f1;
+        border-radius: 5px;
+      }
+
+      .des {
+        padding: 15px;
+        margin: 5px 0 22px 0;
+        border: none;
+        background: #f1f1f1;
+        border-radius: 5px;
+        background-color: #ddd;
+        outline: none;
+        height: 100px;
+      }
+      label {
+        width: 100%;
+      }
+
+      .form-container input[type="text"]:focus,
+      .form-container input[type="password"]:focus {
+        background-color: #ddd;
+        outline: none;
+      }
+
+      .form-container .btn {
+        background-color: #a7a7a7;
+        color: white;
+        padding: 16px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 10px;
+        opacity: 0.8;
+        border-radius: 5px;
+      }
+
+      .form-container .cancel {
+        background-color: rgb(100, 95, 95);
+      }
+
+      .form-container .btn:hover,
+      .open-button:hover {
+        opacity: 1;
+      }
+
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 76%;
+      }
+
+      td,
+      th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+      .card body {
+        width: 40px;
+      }
+    </style>
+  </head>
+  <body style="text-align: center">
+    <div class="form-popup" id="newMeeting">
+      <form class="form-container" onsubmit="event.preventDefault()">
+        <h1 id="groupName"></h1>
+
+        <label><b>start time</b></label>
+        <br />
+
+        <input type="datetime-local" id="start_time" required />
+
+        <br /><br />
+
+        <label><b>finish time</b></label>
+        <br />
+
+        <input type="datetime-local" id="finish_time" required />
+
+        <br /><br />
+
+        <label><b>description</b></label>
+        <br />
+
+        <textarea class="des" id="description" type="text" required></textarea>
+        <br /><br />
+        <label><b>meeting room</b></label>
+        <input id="room" type="text" required />
+        <br /><br />
+
+        <button type="submit" id="add" class="btn">add</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">
+          Close
+        </button>
+      </form>
+    </div>
+    <br /><br />
+    <h1>Appointments schedule</h1>
+    <br /><br />
+    <form>
+      <label for="cars"><h4>Select a group:</h4></label>
+      <select id="select">
+        <option value=""></option>
+      </select>
+      <br /><br />
+      <input
+        class="btns"
+        type="button"
+        value="view appointments"
+        id="selectTeam"
+      />
+      <button class="btns" type="button" onclick="openForm()">
+        add new meeting
+      </button>
+    </form>
+    <br /><br />
+
+    <br /><br />
+
+    <div id="tabl" class="card-body" style="text-align: center; display: none">
+      <table
+        class="table table-bordered"
+        style="border: 1px solid; margin-left: 100px; margin-bottom: 100px"
+      >
+        <thead>
+          <tr style="text-align: center">
+            <th style="width: 8%">#</th>
+            <th style="width: 23%">start time</th>
+            <th style="width: 23%">finish time</th>
+            <th style="width: 23%">description</th>
+            <th style="width: 23%">room</th>
+          </tr>
+        </thead>
+        <tbody id="table" style="border: solid"></tbody>
+      </table>
+    </div>
+
+    <script>
+      let check = false;
+      var theId;
+      $(document).ready(function () {
+        $.ajax({
+          url: "http://localhost:3333/groups",
+          success: function (res) {
+            let results = JSON.parse(res).groups;
+
+            results.forEach((element) => {
+              let selects = "";
+
+              selects += `  <option id='${element.id}' value="${element.id}">${element.group_name}</option>`;
+              $("#select").append(selects);
+            });
+
+            $("#select").on("change", function (ev) {
+              check = true;
+              theId = ev.currentTarget.value;
+
+              $("#selectTeam").click(function () {
+                $("#table").html("");
+
+                $.ajax({
+                  url: `http://localhost:3333/meetings/?id=` + theId,
+                  success: function (res) {
+                    let results = JSON.parse(res).meeting;
+
+                    let table = "";
+                    $("#table").html("");
+                    results.forEach((element) => {
+                      table += ` <tr><td>${element.id}</td>
+
+                        <td>${element.start_time}</td>
+                        <td>${element.finish_time}</td>
+                        <td>${element.description}</td>
+                        <td>${element.room}</td></tr>`;
+                    });
+
+                    $("#tabl").css("display", "block");
+                    $("#table").append(table);
+                  },
+                });
+              });
+            });
+          },
+        });
+      });
+
+      function openForm() {
+        if (check) {
+          let groupName = $(`#${theId}`).text();
+
+          $("#groupName").append(groupName);
+          document.getElementById("newMeeting").style.display = "block";
+        } else {
+          Swal.fire({
+            title: "select a group please",
+          });
+        }
+      }
+
+      function closeForm() {
+        $("#groupName").html("");
+        document.getElementById("newMeeting").style.display = "none";
+      }
+
+      let start;
+      let finish;
+
+      $("#start_time").on("change", (e) => {
+        let ch = e.currentTarget.value;
+
+        let startDate = new Date(ch);
+        let startDte = `${startDate.getFullYear()}/${
+          startDate.getMonth() + 1
+        }/${startDate.getDay()}  ${startDate.getHours()}:00`;
+
+        $.ajax({
+          url: `http://localhost:3333/check/?id=${theId}&start=${startDte}`,
+          success: function (res) {
+            alert(JSON.stringify(res.err));
+          },
+        });
+      });
+
+      $("#add").click(function () {
+        start = $("#start_time").val();
+        finish = $("#finish_time").val();
+        let des = $("#description").val();
+        let room = $("#room").val();
+
+        $.ajax({
+          url: `http://localhost:3333/add`,
+          method: "post",
+          data: {
+            group_id: theId,
+            start: start,
+            finish: finish,
+            des: des,
+            room: room,
+          },
+
+          success: function (res) {
+            alert(JSON.stringify(res.err));
+          },
+        });
+        $("#newMeeting").css("display", "none");
+      });
+    </script>
+  </body>
+</html>
