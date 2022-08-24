@@ -90,4 +90,5 @@ app.post("/add", (req, res) => {
   }
 });
 
-app.listen(3333, console.log("Listening to port 9999-task-3"));
+const po = process.env.PORT || 3333;
+app.listen(po, console.log("Listening to port 9999-task-3"));
