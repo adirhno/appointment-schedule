@@ -22,10 +22,11 @@ const conn = mysql.createConnection({
 conn.connect();
 
 app.get("/groups", (req, res) => {
-  let sql = "SELECT * FROM groups";
-  conn.query(sql, (err, results, fields) => {
-    res.send(`{"groups": ${JSON.stringify(results)}} `);
-  });
+  // let sql = "SELECT * FROM groups";
+  // conn.query(sql, (err, results, fields) => {
+  //   res.send(`{"groups": ${JSON.stringify(results)}} `);
+  // });
+  res.send("hello");
 });
 
 app.get("/meetings", (req, res) => {
