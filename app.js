@@ -16,7 +16,7 @@ const conn = mysql.createConnection({
   host: "94.228.113.90",
   database: "database",
   user: "hostman",
-  pass: "2e5d1870",
+  password: "2e5d1870",
 });
 
 conn.connect();
