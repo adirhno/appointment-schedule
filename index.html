@@ -203,7 +203,7 @@
       var theId;
       $(document).ready(function () {
         $.ajax({
-          url: "https://appointment-schedule.hostman.site/groups",
+          url: "https://vac-par.herokuapp.com/groups",
           success: function (res) {
             let results = JSON.parse(res).groups;
 
@@ -222,9 +222,7 @@
                 $("#table").html("");
 
                 $.ajax({
-                  url:
-                    `https://appointment-schedule.hostman.site/meetings/?id=` +
-                    theId,
+                  url: `https://vac-par.herokuapp.com/meetings/?id=` + theId,
                   success: function (res) {
                     let results = JSON.parse(res).meeting;
 
@@ -279,7 +277,7 @@
         }/${startDate.getDay()}  ${startDate.getHours()}:00`;
 
         $.ajax({
-          url: `https://appointment-schedule.hostman.site/check/?id=${theId}&start=${startDte}`,
+          url: `https://vac-par.herokuapp.com/check/?id=${theId}&start=${startDte}`,
           success: function (res) {
             alert(JSON.stringify(res.err));
           },
@@ -293,7 +291,7 @@
         let room = $("#room").val();
 
         $.ajax({
-          url: `https://appointment-schedule.hostman.site/add`,
+          url: `https://vac-par.herokuapp.com/add`,
           method: "post",
           data: {
             group_id: theId,
