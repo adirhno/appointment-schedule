@@ -23,7 +23,7 @@ const conn = mysql.createConnection({
 conn.connect();
 
 app.get("/", (req, res) => {
-  res.render("index");
+  renderHTML(path.resolve(__dirname, "./index.html"), res);
   // let sql = "SELECT * FROM groups";
   // conn.query(sql, (err, results, fields) => {
   //   res.send(`{"groups": ${JSON.stringify(results)}} `);
