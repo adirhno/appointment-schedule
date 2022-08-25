@@ -20,7 +20,11 @@ const conn = mysql.createConnection({
 });
 //b716cb656f53c5:b83ce3c0@eu-cdbr-west-03.cleardb.net/heroku_13d18506e7b1061?reconnect=true
 
-mysql: conn.connect();
+conn.connect();
+
+app.get("/", (req, res) => {
+  res.send("ds");
+});
 
 app.get("/groups", (req, res) => {
   // let sql = "SELECT * FROM groups";
