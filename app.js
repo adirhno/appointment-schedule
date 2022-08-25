@@ -34,7 +34,6 @@ app.get("/groups", (req, res) => {
   conn.query(sql, (err, results, fields) => {
     res.send(`{"groups": ${JSON.stringify(results)}} `);
   });
-  res.send("hello");
 });
 
 app.get("/meetings", (req, res) => {
