@@ -22,19 +22,19 @@ const conn = mysql.createConnection({
 
 conn.connect();
 
-// app.get("/", (req, res) => {
-//   let sql = "SELECT * FROM groups";
-//   conn.query(sql, (err, results, fields) => {
-//     res.send(`{"groups": ${JSON.stringify(results)}} `);
-//   });
-// });
-
-app.get("/groups", (req, res) => {
+app.get("/", (req, res) => {
   let sql = "SELECT * FROM groups";
   conn.query(sql, (err, results, fields) => {
     res.send(`{"groups": ${JSON.stringify(results)}} `);
   });
 });
+
+// app.get("/groups", (req, res) => {
+//   let sql = "SELECT * FROM groups";
+//   conn.query(sql, (err, results, fields) => {
+//     res.send(`{"groups": ${JSON.stringify(results)}} `);
+//   });
+// });
 
 app.get("/meetings", (req, res) => {
   let sql = `SELECT * FROM meetings WHERE group_id=${req.query.id}`;
