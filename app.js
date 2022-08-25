@@ -13,13 +13,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const conn = mysql.createConnection({
-  host: "mysql-5-d487.hostman.site",
-  password: "2e5d1870",
-  user: "hostman",
-  database: "database",
+  host: "eu-cdbr-west-03.cleardb.net",
+  password: "b83ce3c0",
+  user: "b716cb656f53c5",
+  database: "heroku_13d18506e7b1061",
 });
+//b716cb656f53c5:b83ce3c0@eu-cdbr-west-03.cleardb.net/heroku_13d18506e7b1061?reconnect=true
 
-conn.connect();
+mysql: conn.connect();
 
 app.get("/groups", (req, res) => {
   // let sql = "SELECT * FROM groups";
