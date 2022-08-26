@@ -5,7 +5,6 @@ let Joi = require("joi");
 
 const cors = require("cors");
 const mysql = require("mysql");
-const { config } = require("nodemon");
 
 let app = express();
 app.use(cors());
